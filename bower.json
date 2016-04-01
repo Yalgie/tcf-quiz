@@ -1,0 +1,24 @@
+{
+    "name": "tcf-quiz",
+    "description": "Responsive jQuery quiz",
+    "version": "0.1.0",
+    "authors": [
+        "Daniel Yalg <daniel@thecodingforge.com.au>"
+    ],
+
+    "main": [
+        "./dist/barebones.min.js",
+        "./dist/barebones.min.css"
+    ],
+
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ],
+
+    "dependencies": {
+        "jquery": "~1.11"
+    }
+}
