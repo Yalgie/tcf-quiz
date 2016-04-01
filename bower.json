@@ -11,7 +11,6 @@
         "./dist/barebones.min.css"
     ],
 
-    "private": true,
     "ignore": [
         "**/.*",
         "node_modules",
@@ -19,6 +18,7 @@
     ],
 
     "dependencies": {
-        "jquery": "~1.11"
+        "jquery": "~1.11",
+        "font-awesome": "~4.5.0"
     }
 }

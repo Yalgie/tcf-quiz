@@ -43,7 +43,17 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: "bower_components/jquery/dist/",
                         src: ['jquery.min.js'],
-                        dest: 'dist/demo/deps/'
+                        dest: 'dist/demo/deps/js/'
+                    }, {
+                        expand: true,
+                        cwd: "bower_components/font-awesome/fonts/",
+                        src: ['*'],
+                        dest: 'dist/demo/deps/fonts/'
+                    }, {
+                        expand: true,
+                        cwd: "bower_components/font-awesome/css/",
+                        src: ['font-awesome.min.css'],
+                        dest: 'dist/demo/deps/css/'
                     }
                 ],
             },
@@ -57,5 +67,4 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     // Default task(s).
     grunt.registerTask('default', ['bower:install', 'less', 'uglify', 'copy:main']);
-
 };
