@@ -115,38 +115,74 @@ jQuery.fn.tcf_quiz = function(options) {
             }
             else {
                 if (selectedIndex == correctIndex) {
-                    methods.appendCorrectFeedback();
+                    methods.appendCorrectFeedback(selectedIndex);
                 }
                 else {
-                    methods.appendIncorrectFeedback();
+                    methods.appendIncorrectFeedback(selectedIndex);
                 }
                 children.find("input[type='radio']").attr("disabled", "disabled")
             }
         },
 
-        appendCorrectFeedback: function() {
+        appendCorrectFeedback: function(i) {
+            var current = settings.questions[settings.currentQuestion - 1];
             settings.correctCount++;
-            settings.elements.feedbackWrap.html("<p>Correct</p>");
             settings.elements.checkBtn.hide();
             settings.elements.nextBtn.show();
             if (settings.currentQuestion == settings.questions.length) {
                 settings.elements.nextBtn.html("Finish Quiz");
             }
+
+            if (current.answers[i].feedback != undefined) {
+                settings.elements.feedbackWrap.html("<p>" + current.answers[i].feedback + "</p>");
+            }
+            else if (current.feedback != undefined) {
+                if (current.feedback[0].correct != undefined) {
+                    settings.elements.feedbackWrap.html("<p>" + current.feedback[0].correct + "</p>");
+                }
+                else if (current.feedback[0].generic != undefined) {
+                    settings.elements.feedbackWrap.html("<p>" + current.feedback[0].generic + "</p>");
+                }
+                else {
+                    settings.elements.feedbackWrap.html("<p>Correct</p>");
+                }
+            }
+            else {
+                settings.elements.feedbackWrap.html("<p>Correct</p>");
+            }
         },
 
-        appendIncorrectFeedback: function() {
-            settings.elements.feedbackWrap.html("<p>Incorrect</p>");
+        appendIncorrectFeedback: function(i) {
+            var current = settings.questions[settings.currentQuestion - 1];
             if (settings.advanceOnIncorrect) {
                 settings.elements.checkBtn.hide();
                 settings.elements.nextBtn.show();
                 if (settings.currentQuestion == settings.questions.length) {
                     settings.elements.nextBtn.html("View Results");
                 }
+
+                if (current.answers[i].feedback != undefined) {
+                    settings.elements.feedbackWrap.html("<p>" + current.answers[i].feedback + "</p>");
+                }
+                else if (current.feedback != undefined) {
+                    if (current.feedback[0].incorrect != undefined) {
+                        settings.elements.feedbackWrap.html("<p>" + current.feedback[0].incorrect + "</p>");
+                    }
+                    else if (current.feedback[0].generic != undefined) {
+                        settings.elements.feedbackWrap.html("<p>" + current.feedback[0].generic + "</p>");
+                    }
+                    else {
+                        settings.elements.feedbackWrap.html("<p>Incorrect</p>");
+                    }
+                }
+                else {
+                    settings.elements.feedbackWrap.html("<p>Incorrect</p>");
+                }
             }
         },
 
         appendAlertFeedback: function() {
-            settings.elements.feedbackWrap.html("Please select an answer.")
+            settings.elements.feedbackWrap.html("Please select an answer.");
         },
 
         nextQuestion: function() {
