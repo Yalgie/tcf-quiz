@@ -1,5 +1,7 @@
 jQuery.fn.tcf_quiz = function(options) {
-
+    // textarea
+    // cloze
+    // matching/sortable?
     var defaults = {
         finalFeedback: "Congrats",
         currentQuestion: 1,
@@ -63,11 +65,15 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         appendAnswers: function() {
-            if (settings.questions[settings.currentQuestion - 1].questionType == "radio") {
+            var type = settings.questions[settings.currentQuestion - 1].questionType;
+            if (type == "radio") {
                 methods.buildRadioAnswers();
             }
-            else if (settings.questions[settings.currentQuestion - 1].questionType == "checkbox") {
+            else if (type == "checkbox") {
                 methods.buildCheckboxAnswers();
+            }
+            else if (type == "textarea") {
+                methods.buildTextareaAnswer();
             }
         },
 
@@ -101,6 +107,12 @@ jQuery.fn.tcf_quiz = function(options) {
             })
         },
 
+        buildTextareaAnswer: function() {
+            var current = settings.questions[settings.currentQuestion - 1].answers;
+            settings.elements.answersWrap.html("");
+            settings.elements.answersWrap.append("<textarea rows='5'></textarea>");
+        },
+
         appendButtons: function() {
             settings.elements.buttonWrap.append(settings.elements.checkBtn);
             settings.elements.buttonWrap.append(settings.elements.nextBtn.hide());
@@ -115,6 +127,9 @@ jQuery.fn.tcf_quiz = function(options) {
                 }
                 else if (currentType == "checkbox") {
                     methods.checkCheckboxAnswers();
+                }
+                else if (currentType == "textarea") {
+                    methods.checkTextareaAnswer();
                 }
             })
             settings.elements.nextBtn.click(function() {
@@ -168,6 +183,18 @@ jQuery.fn.tcf_quiz = function(options) {
                     methods.appendIncorrectFeedback();
                 }
                 children.find("input[type='checkbox']").attr("disabled", "disabled");
+            }
+        },
+
+        checkTextareaAnswer: function() {
+            var children = $(settings.elements.answersWrap.children());
+            var textarea = children.find("textarea");
+            if ($(children[0]).val().length == 0) {
+                methods.appendAlertFeedback();
+            }
+            else {
+                methods.appendTextareaFeedback();
+                children.find("textarea").attr("disabled", "disabled");
             }
         },
 
@@ -235,6 +262,11 @@ jQuery.fn.tcf_quiz = function(options) {
             settings.elements.feedbackWrap.html("Please select an answer.");
         },
 
+        appendTextareaFeedback: function() {
+            var model = settings.questions[settings.currentQuestion - 1].answers[0].answerText;
+            settings.elements.feedbackWrap.html("<p>Model Response:</p><p>" + model + "</p>");
+        },
+
         nextQuestion: function() {
             if (settings.currentQuestion == settings.questions.length) {
                 settings.elements.feedbackWrap.hide();
@@ -254,7 +286,7 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         finalFeedback: function() {
-            settings.elements.feedbackWrap.detach()
+            settings.elements.feedbackWrap.detach();
             settings.elements.feedbackWrap.insertBefore(settings.elements.buttonWrap);
             settings.elements.feedbackWrap.show();
             settings.elements.questionWrap.hide();
