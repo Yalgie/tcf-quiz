@@ -192,8 +192,8 @@ jQuery.fn.tcf_quiz = function(options) {
                 methods.appendAlertFeedback();
             }
             else {
+                textarea.attr("disabled", "disabled");
                 methods.appendTextareaFeedback();
-                children.find("textarea").attr("disabled", "disabled");
             }
         },
 
@@ -262,6 +262,7 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         appendTextareaFeedback: function() {
+            settings.elements.feedbackWrap.show();
             var model = settings.questions[settings.currentQuestion - 1].answers[0].answerText;
             settings.elements.feedbackWrap.html("<p>Model Response:</p><p>" + model + "</p>");
             settings.elements.checkBtn.hide();
