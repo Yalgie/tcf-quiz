@@ -64,14 +64,16 @@ jQuery.fn.tcf_quiz = function(options) {
 
         appendAnswers: function() {
             if (settings.questions[settings.currentQuestion - 1].questionType == "radio") {
-                methods.buildMultiChoice();
+                methods.buildRadioAnswers();
+            }
+            else if (settings.questions[settings.currentQuestion - 1].questionType == "checkbox") {
+                methods.buildCheckboxAnswers();
             }
         },
 
-        buildMultiChoice: function() {
+        buildRadioAnswers: function() {
             var current = settings.questions[settings.currentQuestion - 1].answers;
-            var wrap = settings.elements.answersWrap;
-            wrap.html("");
+            settings.elements.answersWrap.html("");
             $(current).each(function(i) {
                 var text = current[i].answerText;
                 if (current[i].correctAnswer) {
@@ -80,7 +82,22 @@ jQuery.fn.tcf_quiz = function(options) {
                 else {
                     var input = "<input data-correct='0' type='radio' name='tcf-radio'/> ";
                 }
-                wrap.append("<p>" + input + "" + text + "</p>");
+                settings.elements.answersWrap.append("<p>" + input + "" + text + "</p>");
+            })
+        },
+
+        buildCheckboxAnswers: function() {
+            var current = settings.questions[settings.currentQuestion - 1].answers;
+            settings.elements.answersWrap.html("");
+            $(current).each(function(i) {
+                var text = current[i].answerText;
+                if (current[i].correctAnswer) {
+                    var input = "<input data-correct='1' type='checkbox' name='tcf-checkbox'/> ";
+                }
+                else {
+                    var input = "<input data-correct='0' type='checkbox' name='tcf-checkbox'/> ";
+                }
+                settings.elements.answersWrap.append("<p>" + input + "" + text + "</p>");
             })
         },
 
@@ -91,21 +108,24 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         bindButtons: function() {
-            var currentType = settings.questions[settings.currentQuestion - 1].questionType;
-            settings.elements.checkBtn.on("click", function() {
+            settings.elements.checkBtn.click(function() {
+                var currentType = settings.questions[settings.currentQuestion - 1].questionType;
                 if (currentType == "radio") {
-                    methods.checkMultiChoiceAnswers();
+                    methods.checkRadioAnswers();
+                }
+                else if (currentType == "checkbox") {
+                    methods.checkCheckboxAnswers();
                 }
             })
-            settings.elements.nextBtn.on("click", function() {
+            settings.elements.nextBtn.click(function() {
                 methods.nextQuestion();
             })
-            settings.elements.resetBtn.on("click", function() {
+            settings.elements.resetBtn.click(function() {
                 methods.resetQuiz();
             })
         },
 
-        checkMultiChoiceAnswers: function(type) {
+        checkRadioAnswers: function() {
             var current = settings.questions[settings.currentQuestion - 1].answers;
             var children = $(settings.elements.answersWrap.children());
             var selected = children.find("input[type='radio']:checked");
@@ -121,7 +141,33 @@ jQuery.fn.tcf_quiz = function(options) {
                 else {
                     methods.appendIncorrectFeedback(selectedIndex);
                 }
-                children.find("input[type='radio']").attr("disabled", "disabled")
+                children.find("input[type='radio']").attr("disabled", "disabled");
+            }
+        },
+
+        checkCheckboxAnswers: function() {
+            var current = settings.questions[settings.currentQuestion - 1].answers;
+            var children = $(settings.elements.answersWrap.children());
+            var correctLength = children.find("input[data-correct='1']").length;
+            var correctCount = 0;
+            var selected = children.find("input[type='checkbox']:checked");
+
+            if (selected.length == 0) {
+                methods.appendAlertFeedback();
+            }
+            else {
+                children.find("input[type='checkbox']").each(function(i) {
+                    if ($(this).is(":checked")) {
+                        correctCount++;
+                    }
+                })
+                if (correctCount == correctLength) {
+                    methods.appendCorrectFeedback();
+                }
+                else {
+                    methods.appendIncorrectFeedback();
+                }
+                children.find("input[type='checkbox']").attr("disabled", "disabled");
             }
         },
 
@@ -135,7 +181,7 @@ jQuery.fn.tcf_quiz = function(options) {
                 settings.elements.nextBtn.html("Finish Quiz");
             }
 
-            if (current.answers[i].feedback != undefined && current.questionType == "radio") {
+            if (current.questionType == "radio" && current.answers[i].feedback != undefined) {
                 settings.elements.feedbackWrap.html("<p>" + current.answers[i].feedback + "</p>");
             }
             else if (current.feedback != undefined) {
@@ -164,7 +210,7 @@ jQuery.fn.tcf_quiz = function(options) {
                     settings.elements.nextBtn.html("View Results");
                 }
 
-                if (current.answers[i].feedback != undefined && current.questionType == "radio") {
+                if (current.questionType == "radio" && current.answers[i].feedback != undefined) {
                     settings.elements.feedbackWrap.html("<p>" + current.answers[i].feedback + "</p>");
                 }
                 else if (current.feedback != undefined) {
@@ -209,7 +255,7 @@ jQuery.fn.tcf_quiz = function(options) {
 
         finalFeedback: function() {
             settings.elements.feedbackWrap.detach()
-            settings.elements.feedbackWrap.insertBefore(settings.elements.buttonWrap)
+            settings.elements.feedbackWrap.insertBefore(settings.elements.buttonWrap);
             settings.elements.feedbackWrap.show();
             settings.elements.questionWrap.hide();
             settings.elements.answersWrap.hide();
