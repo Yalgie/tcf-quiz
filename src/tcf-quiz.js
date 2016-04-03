@@ -1,5 +1,4 @@
 jQuery.fn.tcf_quiz = function(options) {
-    // textarea
     // cloze
     // matching/sortable?
     var defaults = {
@@ -265,6 +264,8 @@ jQuery.fn.tcf_quiz = function(options) {
         appendTextareaFeedback: function() {
             var model = settings.questions[settings.currentQuestion - 1].answers[0].answerText;
             settings.elements.feedbackWrap.html("<p>Model Response:</p><p>" + model + "</p>");
+            settings.elements.checkBtn.hide();
+            settings.elements.nextBtn.show();
         },
 
         nextQuestion: function() {
