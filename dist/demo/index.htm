@@ -15,8 +15,9 @@
     <script>
     $(document).ready(function() {
         $("#quiz-id").tcf_quiz({
+            finalFeedback: "dsdsdsds",
             questions: [{
-                questionType: "multi-choice",
+                questionType: "radio",
                 questionText: "Answer is C.",
                 answers: [{
                     answerText: "A"
@@ -29,7 +30,7 @@
                     answerText: "D"
                 }]
             }, {
-                questionType: "multi-choice",
+                questionType: "radio",
                 questionText: "Answer is B.",
                 answers: [{
                     answerText: "A"

@@ -1,6 +1,7 @@
 jQuery.fn.tcf_quiz = function(options) {
 
     var defaults = {
+        finalFeedback: "Congrats",
         currentQuestion: 1,
         correctCount: 0,
         titleText: "Quiz",
@@ -62,7 +63,7 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         appendAnswers: function() {
-            if (settings.questions[settings.currentQuestion - 1].questionType == "multi-choice") {
+            if (settings.questions[settings.currentQuestion - 1].questionType == "radio") {
                 methods.buildMultiChoice();
             }
         },
@@ -74,10 +75,10 @@ jQuery.fn.tcf_quiz = function(options) {
             $(current).each(function(i) {
                 var text = current[i].answerText;
                 if (current[i].correctAnswer) {
-                    var input = "<input data-correct='1' type='radio' name='tcf-multi-choice'/> ";
+                    var input = "<input data-correct='1' type='radio' name='tcf-radio'/> ";
                 }
                 else {
-                    var input = "<input data-correct='0' type='radio' name='tcf-multi-choice'/> ";
+                    var input = "<input data-correct='0' type='radio' name='tcf-radio'/> ";
                 }
                 wrap.append("<p>" + input + "" + text + "</p>");
             })
@@ -92,7 +93,7 @@ jQuery.fn.tcf_quiz = function(options) {
         bindButtons: function() {
             var currentType = settings.questions[settings.currentQuestion - 1].questionType;
             settings.elements.checkBtn.on("click", function() {
-                if (currentType == "multi-choice") {
+                if (currentType == "radio") {
                     methods.checkMultiChoiceAnswers();
                 }
             })
@@ -126,6 +127,7 @@ jQuery.fn.tcf_quiz = function(options) {
 
         appendCorrectFeedback: function(i) {
             var current = settings.questions[settings.currentQuestion - 1];
+            settings.elements.feedbackWrap.show();
             settings.correctCount++;
             settings.elements.checkBtn.hide();
             settings.elements.nextBtn.show();
@@ -133,7 +135,7 @@ jQuery.fn.tcf_quiz = function(options) {
                 settings.elements.nextBtn.html("Finish Quiz");
             }
 
-            if (current.answers[i].feedback != undefined) {
+            if (current.answers[i].feedback != undefined && current.questionType == "radio") {
                 settings.elements.feedbackWrap.html("<p>" + current.answers[i].feedback + "</p>");
             }
             else if (current.feedback != undefined) {
@@ -154,6 +156,7 @@ jQuery.fn.tcf_quiz = function(options) {
 
         appendIncorrectFeedback: function(i) {
             var current = settings.questions[settings.currentQuestion - 1];
+            settings.elements.feedbackWrap.show();
             if (settings.advanceOnIncorrect) {
                 settings.elements.checkBtn.hide();
                 settings.elements.nextBtn.show();
@@ -161,7 +164,7 @@ jQuery.fn.tcf_quiz = function(options) {
                     settings.elements.nextBtn.html("View Results");
                 }
 
-                if (current.answers[i].feedback != undefined) {
+                if (current.answers[i].feedback != undefined && current.questionType == "radio") {
                     settings.elements.feedbackWrap.html("<p>" + current.answers[i].feedback + "</p>");
                 }
                 else if (current.feedback != undefined) {
@@ -182,16 +185,19 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         appendAlertFeedback: function() {
+            settings.elements.feedbackWrap.show();
             settings.elements.feedbackWrap.html("Please select an answer.");
         },
 
         nextQuestion: function() {
             if (settings.currentQuestion == settings.questions.length) {
+                settings.elements.feedbackWrap.hide();
                 methods.finalFeedback();
                 settings.elements.resetBtn.show();
                 settings.elements.nextBtn.hide();
             }
             else {
+                settings.elements.feedbackWrap.hide();
                 settings.currentQuestion++;
                 methods.appendQuestion();
                 methods.appendAnswers();
@@ -202,12 +208,17 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         finalFeedback: function() {
+            settings.elements.feedbackWrap.detach()
+            settings.elements.feedbackWrap.insertBefore(settings.elements.buttonWrap)
+            settings.elements.feedbackWrap.show();
             settings.elements.questionWrap.hide();
             settings.elements.answersWrap.hide();
-            settings.elements.feedbackWrap.html("Congrats");
+            settings.elements.feedbackWrap.html("<p>" + settings.finalFeedback + "</p>");
         },
 
         resetQuiz: function() {
+            settings.elements.feedbackWrap.detach().hide();
+            settings.elements.feedbackWrap.insertAfter(settings.elements.buttonWrap);
             settings.currentQuestion = 1;
             settings.correctCount = 0;
             methods.appendQuestion();
@@ -216,7 +227,7 @@ jQuery.fn.tcf_quiz = function(options) {
             settings.elements.questionWrap.show();
             settings.elements.answersWrap.show();
             settings.elements.checkBtn.show();
-            settings.elements.nextBtn.hide();
+            settings.elements.nextBtn.hide().html("Next Question");
             settings.elements.resetBtn.hide();
         },
     };
