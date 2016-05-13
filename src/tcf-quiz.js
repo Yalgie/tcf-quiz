@@ -74,6 +74,9 @@ jQuery.fn.tcf_quiz = function(options) {
             else if (type == "textarea") {
                 methods.buildTextareaAnswer();
             }
+            else if (type == "cloze") {
+                methods.buildClozeAnswer();
+            }
         },
 
         buildRadioAnswers: function() {
@@ -110,6 +113,71 @@ jQuery.fn.tcf_quiz = function(options) {
             var current = settings.questions[settings.currentQuestion - 1].answers;
             settings.elements.answersWrap.html("");
             settings.elements.answersWrap.append("<textarea rows='5'></textarea>");
+        },
+
+        buildClozeAnswer: function() {
+            var current = settings.questions[settings.currentQuestion - 1].answers[0].answerText;
+            var html = methods.extractClozeQuestion(current);
+            settings.elements.answersWrap.html("");
+            settings.elements.answersWrap.append(html);
+        },
+
+        extractClozeQuestion: function(str) {
+            var bracketArr = [];
+            $.each(str.split(''),function(i,v){
+                if(v == "[") bracketArr.push(i+1);
+                if(v == "]") bracketArr.push(i);
+            });
+
+            return(methods.getClozeAnswerArr(bracketArr, str))
+        },
+
+        getClozeAnswerArr: function(arr, str) {
+            var tempArr = [];
+
+            tempArr.push(str.substring(0, arr[0]))
+            $.each(arr,function(i,v){
+                tempArr.push(str.substring(arr[i], arr[i+1]))
+            });
+
+            var htmlArr = [];
+            $.each(tempArr,function(i,v){
+                if (tempArr[i].endsWith("[") && tempArr[i].startsWith("]")) {
+                    htmlArr.push(tempArr[i].substring(1,(tempArr[i].length) - 1))
+                }
+                else if (tempArr[i].startsWith("]")) {
+                    htmlArr.push(tempArr[i].substring(1,tempArr[i].length))
+                }
+                else if (tempArr[i].endsWith("[")) {
+                    htmlArr.push(tempArr[i].substring(0,(tempArr[i].length) - 1))
+                }
+                else {
+                    var current = tempArr[i].split(",");
+                    var tempHtml = [];
+                    tempHtml.push("<select>")
+                    $.each(current,function(x,y){
+                        var newStr = current[x].trim()
+                        if (newStr.startsWith("*")) {
+                            tempHtml.push("<option data-correct='true' value='"+newStr.replace("*","")+"'>"+newStr.replace("*","")+"</option>")
+                        }
+                        else {
+                            tempHtml.push("<option value='"+newStr+"'>"+newStr+"</option>")
+                        }
+                    });
+                    tempHtml.push("</select>")
+                    htmlArr.push(tempHtml.join(""))
+                }
+            });
+
+            function startsWith(prefix) {
+                return this.indexOf(prefix) === 0;
+            }
+
+            function endsWith(suffix) {
+                return this.match(suffix+"$") == suffix;
+            }
+
+            return(htmlArr.join(""))
         },
 
         appendButtons: function() {
