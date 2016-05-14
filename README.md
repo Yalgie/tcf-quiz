@@ -1,6 +1,6 @@
 #TCF-Quiz
 
-TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes into your HTML fast and easy. The source code is also easily extendable by adding new methods.
+TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes into your HTML fast and easy.
 
 ##Supported Question Types
 
@@ -54,7 +54,7 @@ You're good to go now! All you've got to do now is create your questions. Check 
 ##Creating Questions
 I'll be building a WYSIWG quiz builder in the future, after i've finished the source code for the quiz itself but it's still pretty simple to create questions. Take a look at the examples below and modify them to suit your needs.
 
-You can use html inside the variables below if you want to. Just don't wrap it in a <p> tag otherwise it'll break the layout. Also make sure you keep it all on the same line i.e. no line breaks.
+You can use html inside the variables below if you want to. Just don't wrap it in a `<p>` tag otherwise it'll break the layout. Also make sure you keep it all on the same line i.e. no line breaks.
 
 ####Example Multiple Choice Question
 Multiple Choice questions can only have one correct answer. You can have as many options as you want.
@@ -190,6 +190,8 @@ Feedback can be attached to each question like the example below. If generic fee
 
 Having feedback is not neccessary, if nothing is defined it will just default to say "Correct" if the answer is correct or "Incorrect" if the answer is incorrect.
 
+The Short/Long (textarea) Question Type does not support feedback as it can not be marked and the model response is displayed as it's own form of feedback.
+
 ```javascript
 $(document).ready(function() {
     $("#quiz-id").tcf_quiz({
@@ -217,7 +219,7 @@ $(document).ready(function() {
 })
 ```
 
-The Multiple Choice (radio) question type has some more in depth feedback options, where you can specify feedback for each individual answer. See below for an example of this.
+The Multiple Choice (radio) question type has some more in depth feedback options, where you can specify feedback for each individual answer. See below for an example of this. If the question selected has specific feedback, it will override the custom feedback for the overall question.
 
 ```javascript
 {
@@ -231,13 +233,12 @@ The Multiple Choice (radio) question type has some more in depth feedback option
         correctAnswer: true,
         feedback: "Custom Feedback 2 For This Answer If Selected"
     }, {
-        answerText: "C",
-        feedback: "Custom Feedback 3 For This Answer If Selected"
+        answerText: "C"
     }, {
-        answerText: "D",
-        feedback: "Custom Feedback 4 For This Answer If Selected"
+        answerText: "D"
     }],
     feedback: [{
+        // This will not show up if option A and B are selected as their specific feedback will override this feedback.
         correct: "Custom Correct Feedback For Q3",
         incorrect: "Custom Incorrect Feedback For Q3",
     }]
@@ -249,7 +250,7 @@ There are a few options which help customize each quiz instance:
 
 ####Title Text
 ```javascript
-titleText: "Tile of the Quiz"
+titleText: "Title of the Quiz"
 ```
 This defines the title of your quiz. The default is "Quiz". You can change this to whatever you'd like.
 
