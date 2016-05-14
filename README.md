@@ -16,7 +16,7 @@ TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes int
 Getting started is quick and easy. Follow the steps below:
 
 ####Step 1
-Download the repo and copy the minified files from the `/dist` folder and put them wherever you want.
+Download the repo by running `bower install tcf-quiz` or download the repo here on git. Then copy the minified files from the `/dist` folder and put them wherever you want.
 
 ####Step 2
 Link to the files you've copied inside your HTML document.
