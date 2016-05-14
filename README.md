@@ -112,3 +112,52 @@ questions: [{
     }]
 }]
 ```
+
+##Basic Example
+```javascript
+$(document).ready(function() {
+    $("#quiz-id").tcf_quiz({
+        finalFeedback: "dsdsdsds",
+        questions: [{
+            questionType: "textarea",
+            questionText: "Enter some text.",
+            answers: [{
+                answerText: "Model Answer",
+            }]
+        }, {
+            questionType: "checkbox",
+            questionText: "Answer is A & C.",
+            answers: [{
+                answerText: "A",
+                correctAnswer: true
+            }, {
+                answerText: "B"
+            }, {
+                answerText: "C",
+                correctAnswer: true
+            }, {
+                answerText: "D"
+            }]
+        }, {
+            questionType: "radio",
+            questionText: "Answer is B.",
+            answers: [{
+                answerText: "A"
+            }, {
+                answerText: "B",
+                correctAnswer: true,
+            }, {
+                answerText: "C"
+            }, {
+                answerText: "D"
+            }]
+        }, {
+            questionType: "cloze",
+            questionText: "Select the correct answers below.",
+            answers: [{
+                answerText: "This is a cloze activity select the correct drop down [*correct, incorrect] and again [incorrect, *correct]"
+            }]
+        }]
+    })
+})
+```
