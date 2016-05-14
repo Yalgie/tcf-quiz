@@ -17,6 +17,39 @@
         $("#quiz-id").tcf_quiz({
             finalFeedback: "dsdsdsds",
             questions: [{
+                questionType: "textarea",
+                questionText: "Enter some text.",
+                answers: [{
+                    answerText: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat commodi, ipsa error accusamus quasi minima velit, amet quis! Beatae excepturi accusantium cumque consequuntur laboriosam vero labore optio nulla, quam! Perspiciatis.",
+                }]
+            }, {
+                questionType: "checkbox",
+                questionText: "Answer is A & C.",
+                answers: [{
+                    answerText: "A",
+                    correctAnswer: true
+                }, {
+                    answerText: "B"
+                }, {
+                    answerText: "C",
+                    correctAnswer: true
+                }, {
+                    answerText: "D"
+                }]
+            }, {
+                questionType: "radio",
+                questionText: "Answer is B.",
+                answers: [{
+                    answerText: "A"
+                }, {
+                    answerText: "B",
+                    correctAnswer: true,
+                }, {
+                    answerText: "C"
+                }, {
+                    answerText: "D"
+                }]
+            }, {
                 questionType: "cloze",
                 questionText: "Select the correct answers below.",
                 answers: [{

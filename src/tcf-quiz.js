@@ -155,6 +155,7 @@ jQuery.fn.tcf_quiz = function(options) {
                     var current = tempArr[i].split(",");
                     var tempHtml = [];
                     tempHtml.push("<select>")
+                    tempHtml.push("<option value='none'>-- Select An Answer --</option>")
                     $.each(current,function(x,y){
                         var newStr = current[x].trim()
                         if (newStr.startsWith("*")) {
@@ -198,6 +199,9 @@ jQuery.fn.tcf_quiz = function(options) {
                 else if (currentType == "textarea") {
                     methods.checkTextareaAnswer();
                 }
+                else if (currentType == "cloze") {
+                    methods.checkClozeAnswer();
+                }
             })
             settings.elements.nextBtn.click(function() {
                 methods.nextQuestion();
@@ -214,7 +218,7 @@ jQuery.fn.tcf_quiz = function(options) {
             var selectedIndex = selected.parent().index();
             var correctIndex = children.find("input[data-correct='1']").parent().index();
             if (selected.length == 0) {
-                methods.appendAlertFeedback();
+                methods.appendAlertFeedback("Please select an answer.");
             }
             else {
                 if (selectedIndex == correctIndex) {
@@ -235,7 +239,7 @@ jQuery.fn.tcf_quiz = function(options) {
             var selected = children.find("input[type='checkbox']:checked");
 
             if (selected.length == 0) {
-                methods.appendAlertFeedback();
+                methods.appendAlertFeedback("Please select an answer.");
             }
             else {
                 children.find("input[type='checkbox']").each(function(i) {
@@ -254,14 +258,51 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         checkTextareaAnswer: function() {
-            var children = $(settings.elements.answersWrap.children());
-            var textarea = children.find("textarea");
-            if ($(children[0]).val().length == 0) {
-                methods.appendAlertFeedback();
+            var textarea = $(settings.elements.answersWrap.children());
+            if ($(textarea[0]).val().length == 0) {
+                methods.appendAlertFeedback("Please enter your answer.");
             }
             else {
                 textarea.attr("disabled", "disabled");
                 methods.appendTextareaFeedback();
+            }
+        },
+
+        checkClozeAnswer: function() {
+            var children = $(settings.elements.answersWrap.children());
+            var selects = children.find("select");
+            var allSelected = true;
+            var allCorrect = true;
+
+            $(selects.prevObject).each(function(i) {
+                if ($(this).val() == "none") {
+                    $(this).css("border", "1px solid red")
+                    allSelected = false;
+                }
+            })
+
+            if (!allSelected) {
+                methods.appendAlertFeedback("Please select all answers.");
+                allCorrect = false;
+            }
+            else {
+                $(selects.prevObject).find("option:selected").each(function(i) {
+                    $(this).parent().attr("disabled", "disabled");
+                    if ($(this).data("correct") == true) {
+                        $(this).parent().css("border", "1px solid green")
+                    }
+                    else {
+                        allCorrect = false;
+                        $(this).parent().css("border", "1px solid red")
+                    }
+                })
+            }
+
+            if (allCorrect && allSelected) {
+                methods.appendCorrectFeedback();
+            }
+            else if (!allCorrect && allSelected) {
+                methods.appendIncorrectFeedback();
             }
         },
 
@@ -324,9 +365,9 @@ jQuery.fn.tcf_quiz = function(options) {
             }
         },
 
-        appendAlertFeedback: function() {
+        appendAlertFeedback: function(str) {
             settings.elements.feedbackWrap.show();
-            settings.elements.feedbackWrap.html("Please select an answer.");
+            settings.elements.feedbackWrap.html(str);
         },
 
         appendTextareaFeedback: function() {
