@@ -1,6 +1,6 @@
 #TCF-Quiz
 
-TCF-Quiz is a jQuery plugin that makes inserting custom quizzes into your HTML fast and easy. The source code is also easily extendable by adding new methods. 
+TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes into your HTML fast and easy. The source code is also easily extendable by adding new methods. 
 
 ##Supported Question Types
 
@@ -52,9 +52,10 @@ Insert a div with the same ID used in your initialisition script into your HTML.
 
 
 ##Creating Questions
-I'll be building a WYSIWG quiz builder in the future, after i've finished the source code for the quiz itself but it's still pretty simple to create questions.
+I'll be building a WYSIWG quiz builder in the future, after i've finished the source code for the quiz itself but it's still pretty simple to create questions. Take a look at the examples below and modify them to suit your needs.
 
-###Creating Multiple Choice Question
+###Example Multiple Choice Question
+
 ```javascript
 questions: [{
     questionType: "radio",
@@ -72,7 +73,7 @@ questions: [{
 }]
 ```
 
-###Creating Multiple Choices Question
+###Example Multiple Choices Question
 ```javascript
 questions: [{
     questionType: "checkbox",
@@ -91,7 +92,7 @@ questions: [{
 }]
 ```
 
-###Creating Short/Long Question
+###Example Short/Long Question
 ```javascript
 questions: [{
     questionType: "textarea",
@@ -102,7 +103,7 @@ questions: [{
 }]
 ```
 
-###Creating Cloze Question
+###Example Cloze Question
 ```javascript
 questions: [{
     questionType: "cloze",
@@ -117,7 +118,7 @@ questions: [{
 ```javascript
 $(document).ready(function() {
     $("#quiz-id").tcf_quiz({
-        finalFeedback: "dsdsdsds",
+    	// Advanced Options Can Go Here
         questions: [{
             questionType: "textarea",
             questionText: "Enter some text.",
@@ -160,4 +161,12 @@ $(document).ready(function() {
         }]
     })
 })
+```
+
+##Options
+```javascript
+finalFeedback: "This will show up when the user has finished the quiz"
+titleText: "Tile of the Quiz",
+instructions: "Instructions for the quiz",
+advanceOnIncorrect: true
 ```
