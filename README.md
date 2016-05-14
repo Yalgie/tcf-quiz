@@ -1,6 +1,6 @@
 #TCF-Quiz
 
-TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes into your HTML fast and easy. The source code is also easily extendable by adding new methods. 
+TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes into your HTML fast and easy. The source code is also easily extendable by adding new methods.
 
 ##Supported Question Types
 
@@ -15,7 +15,7 @@ TCF-Quiz is a jQuery plugin that makes creating and inserting custom quizzes int
 ##Getting Started
 Getting started is quick and easy. Follow the steps below:
 
-###Step 1 
+###Step 1
 Download the repo and copy the minified files from the `/dist` folder and put them wherever you want.
 
 ###Step 2
@@ -27,7 +27,7 @@ Link to the files you've copied inside your HTML document.
 ```
 
 ###Step 3
-Insert the initialsation script into a javascript file or embed it in your html file with `<script>` tags.
+Insert the initialisation script into a javascript file or embed it in your html file with `<script>` tags.
 
 ```javascript
 $(document).ready(function() {
@@ -44,10 +44,10 @@ $(document).ready(function() {
 ```
 
 ###Step 4
-Insert a div with the same ID used in your initialisition script into your HTML.
+Insert the div below with the same ID used in your initialisation script into your HTML.
 
 ```html
-<div id="quiz-id"></div>
+<div class="tcf-quiz-wrap" id="quiz-id"></div>
 ```
 
 

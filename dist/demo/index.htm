@@ -5,12 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Barebones Demo</title>
     <link rel="stylesheet" href="../tcf-quiz.min.css">
-    <link rel="stylesheet" href="deps/css/font-awesome.min.css">
-    <script src="deps/js/jquery.min.js"></script>
-    <script src="../../src/tcf-quiz.js"></script>
 </head>
 <body>
-    <div id="quiz-id"></div>
+    <style>
+    * {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #333;
+
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    body {
+        padding: 15px;
+        background-color: #171A1E;
+    }
+    </style>
+
+    <div class="tcf-quiz-wrap" id="quiz-id"></div>
+
+    <script src="deps/jquery.min.js"></script>
+    <script src="../tcf-quiz.min.js"></script>
 
     <script>
     $(document).ready(function() {
@@ -59,21 +75,5 @@
         })
     })
     </script>
-
-    <style>
-    * {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        color: #333;
-        margin: 0px;
-        padding: 0px;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 500;
-        margin-bottom: 15px;
-    }
-    body {
-        padding: 15px;
-    }
-    </style>
 </body>
 </html>

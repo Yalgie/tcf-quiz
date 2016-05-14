@@ -1,7 +1,7 @@
 {
     "name": "tcf-quiz",
     "description": "Responsive jQuery quiz",
-    "version": "0.1.0",
+    "version": "1.0.0",
 
     "authors": [
         "Daniel Yalg <daniel@thecodingforge.com.au>"

@@ -26,16 +26,16 @@ jQuery.fn.tcf_quiz = function(options) {
 
         createElementVariables: function() {
             settings.elements.headerWrap = $("<div>");
-            settings.elements.questionWrap = $("<div>");
+            settings.elements.questionWrap = $("<div class='tcf-quiz-top-buffer'>");
             settings.elements.answersWrap = $("<div>");
             settings.elements.buttonWrap = $("<div>");
             settings.elements.feedbackWrap = $("<div>");
             settings.elements.titleText = $("<h1>" + settings.titleText + "</h1>");
-            settings.elements.instructions = $("<p>" + settings.instructions + "</p>");
-            settings.elements.questionCounter = $("<p></p>");
-            settings.elements.checkBtn = $("<button>Check Answers</button>");
-            settings.elements.nextBtn = $("<button>Next Question</button>");
-            settings.elements.resetBtn = $("<button>Reset Quiz</button>");
+            settings.elements.instructions = $("<p class='tcf-quiz-top-buffer'>" + settings.instructions + "</p>");
+            settings.elements.questionCounter = $("<p class='tcf-quiz-counter'></p>");
+            settings.elements.checkBtn = $("<button type='button'>Check Answers</button>");
+            settings.elements.nextBtn = $("<button type='button'>Next Question</button>");
+            settings.elements.resetBtn = $("<button type='button'>Reset Quiz</button>");
         },
 
         appendWrappers: function() {
@@ -47,13 +47,13 @@ jQuery.fn.tcf_quiz = function(options) {
         },
 
         appendHeaderChildren: function() {
+            settings.elements.headerWrap.append(settings.elements.questionCounter);
             settings.elements.headerWrap.append(settings.elements.titleText);
             settings.elements.headerWrap.append(settings.elements.instructions);
-            settings.elements.headerWrap.append(settings.elements.questionCounter);
         },
 
         updateQuestionCounter: function() {
-            var counterStr = settings.currentQuestion + "/" + settings.questions.length;
+            var counterStr = "<b>" + settings.currentQuestion + "</b>/" + settings.questions.length;
             settings.elements.questionCounter.html(counterStr);
         },
 
@@ -112,7 +112,7 @@ jQuery.fn.tcf_quiz = function(options) {
         buildTextareaAnswer: function() {
             var current = settings.questions[settings.currentQuestion - 1].answers;
             settings.elements.answersWrap.html("");
-            settings.elements.answersWrap.append("<textarea rows='5'></textarea>");
+            settings.elements.answersWrap.append("<textarea></textarea>");
         },
 
         buildClozeAnswer: function() {
@@ -333,6 +333,7 @@ jQuery.fn.tcf_quiz = function(options) {
             else {
                 settings.elements.feedbackWrap.html("<p>Correct</p>");
             }
+            settings.elements.feedbackWrap.addClass("tcf-quiz-top-buffer")
         },
 
         appendIncorrectFeedback: function(i) {
@@ -363,19 +364,22 @@ jQuery.fn.tcf_quiz = function(options) {
                     settings.elements.feedbackWrap.html("<p>Incorrect</p>");
                 }
             }
+            settings.elements.feedbackWrap.addClass("tcf-quiz-top-buffer")
         },
 
         appendAlertFeedback: function(str) {
             settings.elements.feedbackWrap.show();
-            settings.elements.feedbackWrap.html(str);
+            settings.elements.feedbackWrap.html("<p>" + str + "</p>");
+            settings.elements.feedbackWrap.addClass("tcf-quiz-top-buffer")
         },
 
         appendTextareaFeedback: function() {
             settings.elements.feedbackWrap.show();
             var model = settings.questions[settings.currentQuestion - 1].answers[0].answerText;
-            settings.elements.feedbackWrap.html("<p>Model Response:</p><p>" + model + "</p>");
+            settings.elements.feedbackWrap.html("<p'><b>Model Response:</b></p><p>" + model + "</p>");
             settings.elements.checkBtn.hide();
             settings.elements.nextBtn.show();
+            settings.elements.feedbackWrap.addClass("tcf-quiz-top-buffer")
         },
 
         nextQuestion: function() {
